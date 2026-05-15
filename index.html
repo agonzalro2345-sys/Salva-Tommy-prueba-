@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humedales de Bogotá — Humédex</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=ZdiS38P8QqB_PgthLZiHRhPld58oYNh0HGtbkS3PZXe-J1tbYax9ycPJ9L2dzYGSD7UjZPHFfpSbY2jwolFgifo8LofcCTCV9M1NYHTde-ZfS2eTAr6douS85OezZe-5P-ENOzMsZsveJu9DoPbI6UZbv_XI0vjQMEBO5mFBwZKU7tcdKwJLNUkOmAnkxGAhRNdi4qrEEoiq1ugXRlHy3HRZjdXn1k9EkezJzB3sc3KhTRLspUHsf5dbL4rLSTzqKrss0Rske8Gy3E9b0r8aW1zpvLMcABXNh8PK1A6gYglv3T3A5A25O5RIOm2PIZ2a" charset="UTF-8"></script></head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">🌿 <em>HUME</em>DEX</div>
+  <div class="tab active" onclick="showTab('map',this)">🗺️ Mapa</div>
+  <div class="tab" onclick="showTab('dex',this)">📖 Humédex</div>
+  <div class="tab" onclick="showTab('creator',this)">✨ Crear</div>
+  <div class="tab" onclick="showTab('community',this)">🌎 Comunidad</div>
+</nav>
+
+<!-- MODAL -->
+<div class="modal-backdrop hidden" id="cardModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-img-wrap"><img class="modal-img" id="modalImg" src="" alt=""></div>
+    <div class="modal-body">
+      <div class="modal-num" id="modalNum"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-sci" id="modalSci"></div>
+      <div class="modal-tags" id="modalTags"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <button class="modal-close" onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════ MAP ═══════════════ -->
+<div class="screen active" id="screen-map">
+  <div class="page-title">MAPA INTERACTIVO</div>
+  <p class="page-sub">Arrastra las cartas al humedal donde vive cada especie 🐸</p>
+  <div class="map-layout">
+    <div class="map-wrap" id="mapWrap">
+      <img src="assets/mapa_humedales.png" alt="Descripción">
+      <!-- Zones injected by JS -->
+    </div>
+    <div>
+      <div class="score-box">
+        <div class="score-num" id="scoreVal">0 / 10</div>
+        <div class="score-lbl">especies ubicadas correctamente</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <div class="congrats" id="congratsBox">
+        <div class="congrats-txt">🎉 ¡LO LOGRASTE!<br>¡Todas las especies<br>en su humedal! 🌿💧</div>
+      </div>
+      <div class="card-panel">
+        <div class="panel-title">🃏 CARTAS — ARRÁSTRALAS AL MAPA</div>
+        <div class="hand-grid" id="handGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ POKÉDEX ═══════════════ -->
+<div class="screen" id="screen-dex">
+  <div class="page-title">HUMÉDEX</div>
+  <p class="page-sub">Todos los guardianes del ecosistema bogotano</p>
+  <div class="dex-filter" id="dexFilter">
+    <button class="filter-btn active" onclick="filterDex('all',this)">Todos</button>
+    <button class="filter-btn" onclick="filterDex('Ave',this)">🦅 Aves</button>
+    <button class="filter-btn" onclick="filterDex('Mamífero',this)">🦊 Mamíferos</button>
+    <button class="filter-btn" onclick="filterDex('Reptil',this)">🐍 Reptiles</button>
+    <button class="filter-btn" onclick="filterDex('Anfibio',this)">🐸 Anfibios</button>
+    <button class="filter-btn" onclick="filterDex('Insecto',this)">✨ Insectos</button>
+    <button class="filter-btn" onclick="filterDex('Pez',this)">🐟 Peces</button>
+  </div>
+  <div class="dex-grid" id="dexGrid"></div>
+</div>
+
+<!-- ═══════════════ CREATOR ═══════════════ -->
+<div class="screen" id="screen-creator">
+  <div class="page-title">CREAR CARTA</div>
+  <p class="page-sub">Diseña tu propia especie guardiana del humedal ✏️</p>
+  <div class="creator-layout">
+    <div class="form-section">
+      <div class="form-title">📋 DATOS DE LA ESPECIE</div>
+      <div class="form-group">
+        <label>Número</label>
+        <input type="text" id="f-num" placeholder="011" maxlength="3" oninput="livePreview()">
+      </div>
+      <div class="form-group">
+        <label>Nombre común</label>
+        <input type="text" id="f-name" placeholder="Ej: Tingua Bogotana" oninput="livePreview()">
+      </div>
+      <div class="form-group">
+        <label>Nombre científico</label>
+        <input type="text" id="f-sci" placeholder="Ej: Fulica americana" oninput="livePreview()">
+      </div>
+      <div class="form-group">
+        <label>Tipo de especie</label>
+        <select id="f-tipo" onchange="livePreview()">
+          <option>Ave</option><option>Mamífero</option><option>Reptil</option>
+          <option>Anfibio</option><option>Insecto</option><option>Pez</option><option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Humedal(es) donde vive</label>
+        <input type="text" id="f-humedal" placeholder="Ej: La Conejera, Córdoba" oninput="livePreview()">
+      </div>
+      <div class="form-group">
+        <label>Rareza</label>
+        <select id="f-rareza" onchange="livePreview()">
+          <option value="comun">Común</option>
+          <option value="poco-comun">Poco Común</option>
+          <option value="raro">Raro</option>
+          <option value="legendario">Legendario ⭐</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Descripción / Dato curioso</label>
+        <textarea id="f-desc" placeholder="¿Qué hace especial a esta especie en el humedal?" oninput="livePreview()"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagen</label>
+        <div class="upload-zone">
+          <input type="file" accept="image/*" onchange="handleImg(event)">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Haz clic o arrastra tu imagen aquí</div>
+          <img id="uploadPrev" class="upload-preview-img">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tu nombre / apodo</label>
+        <input type="text" id="f-author" placeholder="Ej: EcoExplorador21" oninput="livePreview()">
+      </div>
+      <button class="btn-main" onclick="saveCard()">💾 Publicar en la comunidad</button>
+      <button class="btn-ghost" onclick="clearForm()">↩ Limpiar todo</button>
+    </div>
+    <div class="preview-wrap">
+      <div class="preview-lbl">👁 VISTA PREVIA EN VIVO</div>
+      <div class="preview-card">
+        <div class="pc-art">
+          <div class="pc-placeholder" id="pPlaceholder">🦋</div>
+          <img id="pImg" src="" alt="">
+          <div class="rarity-badge rb-comun" id="pBadge">Común</div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-num" id="pNum">---</div>
+          <div class="pc-name" id="pName">Nombre de la especie</div>
+          <div class="pc-sci" id="pSci">Nombre científico</div>
+          <div class="pc-hume" id="pHume">HUMEDAL: —</div>
+          <div class="pc-desc" id="pDesc">Tu descripción aquí...</div>
+        </div>
+      </div>
+      <p style="font-size:10px;color:var(--text2);text-align:center;margin-top:10px;">La carta quedará en la sección Comunidad</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMMUNITY ═══════════════ -->
+<div class="screen" id="screen-community">
+  <div class="page-title">COMUNIDAD</div>
+  <p class="page-sub">Cartas creadas por jugadores — ¡el ecosistema crece! 🌱</p>
+  <div class="comm-header">
+    <div class="comm-count" id="commCount">0 cartas</div>
+  </div>
+  <div class="comm-grid" id="commGrid"></div>
+</div>
+
+<script src="species.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

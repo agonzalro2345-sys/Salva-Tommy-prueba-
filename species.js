@@ -3,7 +3,11 @@
 
 
 
+<<<<<<< HEAD
 const WETLAND_MAP: Record<string, string> = {
+=======
+const WETLAND_MAP = {
+>>>>>>> 347400d (Initial commit)
   "TORCA-GUAYMARAL":        "TORCA_GUAYMARAL",
   "TORCA GUAYMARAL":        "TORCA_GUAYMARAL",
   "TIBABUYES":              "JUAN_AMARILLO",
@@ -27,7 +31,11 @@ const WETLAND_MAP: Record<string, string> = {
 // Positions tuned to the blue water patches in the pixel-art map (1087×710 px)
 // Labels in the image sit ABOVE the actual water bodies, so zones are placed below each label
 const WETLANDS = [
+<<<<<<< HEAD
   { id: "LA_CONEJERA",     name: "La Conejera",         num: 1,  x: 58, y: 14},
+=======
+  { id: "LA_CONEJERA",     name: "La Conejera",         num: 1,  x:58, y: 14},
+>>>>>>> 347400d (Initial commit)
   { id: "TORCA_GUAYMARAL", name: "Torca-Guaymaral",     num: 2,  x: 70, y: 5 },
   { id: "JABOQUE",         name: "Jaboque",              num: 3,  x: 41, y: 31 },
   { id: "JUAN_AMARILLO",   name: "Juan Amarillo",        num: 4,  x: 50, y: 28 },
@@ -39,7 +47,11 @@ const WETLANDS = [
   { id: "MEANDRO_DEL_SAY", name: "Meandro del Say",      num: 10, x: 26, y: 50 },
 ];
 
+<<<<<<< HEAD
 const INITIAL_SPECIES: Species[] = [
+=======
+const INITIAL_SPECIES = [
+>>>>>>> 347400d (Initial commit)
   {
     id: "sp-001", num: "001",
     name: "Zorro Plateado", scientificName: "Cerdocyon thous",
